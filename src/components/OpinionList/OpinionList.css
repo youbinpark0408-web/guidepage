@@ -1,0 +1,21 @@
+.opinion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.opinion-list-empty {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.opinion-list-empty p {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.opinion-list-empty-sub {
+  font-size: 12px;
+  color: #ccc;
+}

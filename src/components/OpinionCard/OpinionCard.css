@@ -1,0 +1,314 @@
+.opinion-card {
+  background: #fff;
+  border: 1px solid #eaecef;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+
+.opinion-card:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.opinion-card--new {
+  border-color: #2d6be4;
+  box-shadow: 0 0 0 2px rgba(45,107,228,0.15);
+}
+
+/* 카드 헤더 */
+.opinion-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #f8f9fd;
+  border-bottom: 1px solid #eaecef;
+  flex-wrap: wrap;
+}
+
+.opinion-card-index {
+  font-size: 11px;
+  font-weight: 700;
+  color: #aaa;
+}
+
+.card-header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-icon-sm {
+  font-size: 11px;
+  padding: 3px 9px;
+  border: 1px solid #d0d7de;
+  border-radius: 5px;
+  background: #fff;
+  color: #57606a;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+
+.btn-icon-sm:hover {
+  background: #f0f4f8;
+}
+
+.btn-icon-sm.btn-danger {
+  color: #c0392b;
+  border-color: #f5c6c6;
+  background: #fff8f8;
+}
+
+.btn-icon-sm.btn-danger:hover {
+  background: #fdecea;
+}
+
+/* 섹션 */
+.opinion-section {
+  border-bottom: 1px solid #f0f1f3;
+}
+
+.opinion-section:last-of-type {
+  border-bottom: none;
+}
+
+.opinion-section.section-disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.section-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px 6px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+}
+
+.btn-edit-section {
+  font-size: 11px;
+  padding: 3px 10px;
+  border: 1px solid #d0d7de;
+  border-radius: 5px;
+  background: #fff;
+  color: #2d6be4;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  transition: background 0.1s;
+}
+
+.btn-edit-section:hover {
+  background: #edf2ff;
+}
+
+/* 의견 필드 뷰 */
+.opinion-fields {
+  padding: 4px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.opinion-field {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.opinion-field-label {
+  font-weight: 600;
+  color: #57606a;
+  white-space: nowrap;
+  min-width: 72px;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.opinion-field-value {
+  color: #1a1a2e;
+  word-break: break-word;
+  white-space: pre-wrap;
+  font-size: 13px;
+}
+
+.section-empty-hint {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0;
+  font-style: italic;
+}
+
+.section-locked-hint {
+  font-size: 12px;
+  color: #bbb;
+  margin: 0;
+}
+
+/* 인라인 편집 폼 */
+.inline-edit-form {
+  padding: 10px 14px 12px;
+  background: #f8f9fd;
+  border-top: 1px solid #eaecef;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-row-radio {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #57606a;
+}
+
+.form-textarea {
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+  line-height: 1.5;
+  background: #fff;
+}
+
+.form-textarea:focus {
+  border-color: #2d6be4;
+  box-shadow: 0 0 0 3px rgba(45,107,228,0.08);
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.radio-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1px solid #d0d7de;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  color: #444;
+}
+
+.radio-pill input[type='radio'] {
+  display: none;
+}
+
+.radio-pill.selected {
+  background: #edf2ff;
+  border-color: #2d6be4;
+  color: #2d6be4;
+  font-weight: 600;
+}
+
+.radio-pill:hover {
+  background: #f0f5ff;
+  border-color: #7ba7f7;
+}
+
+.inline-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.btn-cancel-sm {
+  padding: 6px 14px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  color: #57606a;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-cancel-sm:hover { background: #f6f8fa; }
+
+.btn-save-sm {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #2d6be4;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-save-sm:hover { background: #1f53c2; }
+
+/* 배지 */
+.opinion-type-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.badge-ok    { background: #e6f9f0; color: #1a7f4e; }
+.badge-error { background: #fdecea; color: #c0392b; }
+.badge-add   { background: #fff4e5; color: #b8640a; }
+.badge-del   { background: #f5f0ff; color: #6b35c8; }
+.badge-mod   { background: #e8f4fd; color: #1a6fa0; }
+.badge-default { background: #f0f0f0; color: #666; }
+
+.agree-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.agree-yes     { background: #e6f9f0; color: #1a7f4e; }
+.agree-no      { background: #fdecea; color: #c0392b; }
+.agree-pending { background: #fff8e5; color: #9a6d00; }
+
+.new-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: #2d6be4;
+  padding: 2px 7px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+}

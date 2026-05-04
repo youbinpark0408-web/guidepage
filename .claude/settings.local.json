@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/mac/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/061ef7ae-cf59-4628-aa78-80a80491790d/0b6f838e-f35d-4959-a402-b6815b9e811d/skills/xlsx/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(npm create *)",
+      "Bash(mv guidpage/* .)",
+      "Bash(mv guidpage/.* .)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(pkill -f \"vite --port 5173\")",
+      "Bash(pkill -f \"vite\")"
+    ]
+  }
+}

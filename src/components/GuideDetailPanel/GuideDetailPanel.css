@@ -1,0 +1,204 @@
+.detail-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  background: #fff;
+}
+
+.detail-panel--empty {
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-panel-empty-state {
+  text-align: center;
+  color: #bbb;
+}
+
+.detail-empty-icon {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.detail-panel-empty-state p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #bbb;
+  margin: 0;
+}
+
+/* 헤더 */
+.detail-panel-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid #eaecef;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.detail-panel-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.detail-back-btn {
+  background: none;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: #57606a;
+  cursor: pointer;
+  transition: background 0.12s;
+  font-family: inherit;
+}
+
+.detail-back-btn:hover {
+  background: #f6f8fa;
+}
+
+.detail-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.new-opinion-hint {
+  font-size: 12px;
+  color: #2d6be4;
+  font-weight: 600;
+  background: #edf2ff;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+
+.btn-download {
+  padding: 7px 16px;
+  background: #1a7f4e;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+  font-family: inherit;
+}
+
+.btn-download:hover {
+  background: #145f3a;
+}
+
+.detail-guide-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.guide-id-badge {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2d6be4;
+  background: #edf2ff;
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+
+.detail-breadcrumb {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.detail-breadcrumb.sub {
+  font-weight: 400;
+  color: #444;
+}
+
+.breadcrumb-sep {
+  color: #ccc;
+  font-size: 14px;
+}
+
+/* 가이드 내용 */
+.detail-content-section {
+  margin: 16px 20px;
+  background: #f8f9fd;
+  border: 1px solid #eaecef;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.detail-section-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #57606a;
+  padding: 10px 14px;
+  background: #f0f4f8;
+  border-bottom: 1px solid #eaecef;
+}
+
+.section-icon {
+  font-size: 14px;
+}
+
+.detail-content-body {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #1a1a2e;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 의견 섹션 */
+.detail-opinions-section {
+  flex: 1;
+  padding: 0 20px 24px;
+}
+
+.detail-opinions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 12px;
+  border-bottom: 1px solid #eaecef;
+  margin-bottom: 14px;
+}
+
+.opinion-total-badge {
+  font-size: 11px;
+  background: #edf2ff;
+  color: #2d6be4;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.btn-add-opinion {
+  padding: 8px 16px;
+  background: #2d6be4;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+  font-family: inherit;
+}
+
+.btn-add-opinion:hover {
+  background: #1f53c2;
+}
