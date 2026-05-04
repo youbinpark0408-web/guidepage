@@ -1,0 +1,285 @@
+.excel-read-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-main);
+}
+
+.excel-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.excel-empty span { font-size: 40px; }
+.excel-empty p { margin: 0; }
+
+/* ── 테이블 래퍼 (스크롤) ── */
+.excel-table-wrap {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--border);
+  margin: 8px 8px 0;
+  border-radius: 6px;
+}
+
+/* ── 테이블 기본 ── */
+.excel-table {
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+}
+
+/* ══════════════════════════
+   헤더 (열 이름 행만 표시)
+══════════════════════════ */
+.excel-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+}
+
+.header-row th {
+  padding: 7px 8px;
+  text-align: left;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 2px solid rgba(0,0,0,0.2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  vertical-align: middle;
+}
+
+.header-row-main {
+  background: #2c5282;
+}
+.header-row-main th {
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+[data-theme="dark"] .header-row-main { background: #1a3050; }
+[data-theme="dark"] .header-row-main th { color: #e6edf3; }
+
+/* ══════════════════════════
+   데이터 행
+══════════════════════════ */
+.data-row td {
+  padding: 4px 8px;
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: top;
+  color: var(--text-primary);
+  line-height: 1.45;
+  /* Limit cell height so long text doesn't blow up the row */
+  max-height: 72px;
+  overflow: hidden;
+}
+.data-row td:last-child { border-right: none; }
+
+.data-row:hover td { background: var(--bg-hover) !important; }
+
+/* 연속 의견 행 */
+.data-row.op-continuation { background: var(--bg-muted); }
+.data-row.op-continuation td { border-color: var(--border-light); }
+
+/* 새로 추가된 Recoil 의견 행 */
+.data-row.row-new { background: #f0fdf4; }
+[data-theme="dark"] .data-row.row-new { background: #0d2318; }
+
+/* 빈 셀 */
+.cell-blank { color: var(--text-faint); }
+.cell-continuation { background: var(--bg-muted) !important; }
+
+/* ── 행 번호 열 ── */
+.col-rownum {
+  width: 32px;
+  min-width: 32px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 10px;
+  background: var(--bg-muted) !important;
+  border-right: 2px solid var(--border) !important;
+  padding: 4px 2px !important;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════
+   열별 너비 (균일하게 통일)
+   텍스트가 많아도 셀이 지나치게
+   늘어나지 않도록 max-width +
+   overflow 처리
+══════════════════════════ */
+
+/* 공통: 텍스트 넘침 처리 */
+.data-cell {
+  overflow: hidden;
+  word-break: break-all;
+}
+
+.col-w-0  { width: 32px;  min-width: 32px;  max-width: 32px; }   /* 순번 */
+.col-w-1  { width: 100px; min-width: 80px;  max-width: 120px; }  /* CAIG ID */
+.col-w-2  { width: 80px;  min-width: 60px;  max-width: 100px; }  /* 대목차 */
+.col-w-3  { width: 80px;  min-width: 60px;  max-width: 100px; }  /* 중목차 */
+.col-w-4  { width: 80px;  min-width: 60px;  max-width: 100px; }  /* 세부목차 */
+.col-w-5  { width: 140px; min-width: 100px; max-width: 180px; white-space: pre-wrap; word-break: break-word; } /* 내용 */
+.col-w-6  { width: 70px;  min-width: 60px;  max-width: 90px; }   /* 의견유형 */
+.col-w-7  { width: 110px; min-width: 80px;  max-width: 140px; white-space: pre-wrap; word-break: break-word; } /* 개정안 */
+.col-w-8  { width: 110px; min-width: 80px;  max-width: 140px; white-space: pre-wrap; word-break: break-word; } /* 수정의견 */
+.col-w-9  { width: 110px; min-width: 80px;  max-width: 140px; white-space: pre-wrap; word-break: break-word; } /* 근거 */
+.col-w-10 { width: 70px;  min-width: 60px;  max-width: 90px; }   /* 의견일치 */
+.col-w-11 { width: 110px; min-width: 80px;  max-width: 140px; white-space: pre-wrap; word-break: break-word; } /* 이슈사항 */
+.col-w-12 { width: 110px; min-width: 80px;  max-width: 140px; white-space: pre-wrap; word-break: break-word; } /* KAIT */
+.col-w-13 { width: 110px; min-width: 80px;  max-width: 140px; white-space: pre-wrap; word-break: break-word; } /* KISA */
+.col-w-ext { width: 110px; min-width: 80px; max-width: 140px; white-space: pre-wrap; word-break: break-word; } /* 추가 열(14+) */
+
+/* ── CAIG ID 배지 ── */
+.er-id-badge {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  white-space: nowrap;
+  color: var(--primary);
+  background: var(--primary-bg);
+}
+
+/* ── 의견 유형 배지 ── */
+.er-op-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.badge-ok    { background: var(--success-bg); color: var(--success); }
+.badge-error { background: var(--danger-bg);  color: var(--danger); }
+.badge-add   { background: var(--warning-bg); color: var(--warning-text); }
+.badge-del   { background: #f5f0ff; color: #6b35c8; }
+.badge-mod   { background: #e8f4fd; color: #1a6fa0; }
+
+[data-theme="dark"] .badge-del { background: #2a1a4a; color: #b08aff; }
+[data-theme="dark"] .badge-mod { background: #0d2233; color: #5ab8f5; }
+
+/* ══════════════════════════
+   페이지네이션 바
+══════════════════════════ */
+.excel-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card);
+  flex-shrink: 0;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 8px 8px;
+  border-radius: 0 0 6px 6px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+.pagination-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pagination-info {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-right: 6px;
+}
+.pagination-info strong { color: var(--text-primary); }
+
+.pagination-size-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.page-size-btn {
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--border-input);
+  border-radius: 5px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+.page-size-btn:hover { background: var(--bg-hover); }
+.page-size-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.pagination-right {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.page-btn {
+  min-width: 30px;
+  height: 26px;
+  padding: 0 7px;
+  border: 1px solid var(--border-input);
+  border-radius: 5px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.page-btn:hover:not(:disabled) {
+  background: var(--primary-bg);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.page-btn:disabled { opacity: 0.3; cursor: default; }
+
+.page-btn-active {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-color: var(--primary) !important;
+}
+
+.page-ellipsis {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 2px;
+  user-select: none;
+}
+
+.page-current-info {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 0 6px;
+  border-left: 1px solid var(--border);
+  margin-left: 4px;
+  white-space: nowrap;
+}

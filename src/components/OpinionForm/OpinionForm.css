@@ -1,7 +1,7 @@
 .opinion-form-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -10,14 +10,15 @@
 }
 
 .opinion-form-panel {
-  background: #fff;
+  background: var(--bg-card);
   border-radius: 14px;
   width: 100%;
   max-width: 560px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   animation: slideUp 0.2s ease;
+  border: 1px solid var(--border);
 }
 
 @keyframes slideUp {
@@ -29,26 +30,17 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 18px 22px;
-  border-bottom: 1px solid #eaecef;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  background: #fff;
+  background: var(--bg-card);
   z-index: 1;
 }
 
-.form-header-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.form-header-left { display: flex; align-items: center; gap: 8px; }
 
-.opinion-form-header h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-  color: #1a1a2e;
-}
+.opinion-form-header h3 { margin: 0; font-size: 16px; font-weight: 700; color: var(--text-primary); }
 
 .form-step-badge {
   font-size: 11px;
@@ -62,8 +54,8 @@
 .form-guide-id {
   font-family: 'Courier New', monospace;
   font-size: 12px;
-  background: #edf2ff;
-  color: #2d6be4;
+  background: var(--primary-bg);
+  color: var(--primary);
   padding: 2px 8px;
   border-radius: 4px;
   font-weight: 700;
@@ -74,45 +66,37 @@
   background: none;
   border: none;
   font-size: 22px;
-  color: #aaa;
+  color: var(--text-muted);
   cursor: pointer;
   line-height: 1;
   padding: 0 4px;
   transition: color 0.15s;
 }
 
-.form-close-btn:hover { color: #333; }
+.form-close-btn:hover { color: var(--text-primary); }
 
 .form-step-hint {
-  padding: 10px 22px;
-  background: #fffbeb;
-  border-bottom: 1px solid #fde68a;
+  padding: 10px 20px;
+  background: var(--warning-bg);
+  border-bottom: 1px solid var(--warning-border);
   font-size: 12px;
-  color: #92400e;
+  color: var(--warning-text);
   line-height: 1.5;
 }
 
 .opinion-form-body {
-  padding: 18px 22px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-.form-row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.form-row { display: flex; flex-direction: column; gap: 6px; }
 
-.form-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #57606a;
-}
+.form-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
 
 .form-textarea {
-  border: 1px solid #d0d7de;
+  border: 1px solid var(--border-input);
   border-radius: 7px;
   padding: 9px 12px;
   font-size: 13px;
@@ -120,49 +104,44 @@
   resize: vertical;
   outline: none;
   transition: border-color 0.15s;
-  color: #1a1a2e;
+  color: var(--text-primary);
+  background: var(--bg-input);
   line-height: 1.6;
 }
 
 .form-textarea:focus {
-  border-color: #2d6be4;
-  box-shadow: 0 0 0 3px rgba(45,107,228,0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-bg);
 }
 
-.form-radio-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+.form-radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .form-radio-label {
   display: flex;
   align-items: center;
   gap: 5px;
   font-size: 13px;
-  color: #444;
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 5px 12px;
-  border: 1px solid #d0d7de;
+  border: 1px solid var(--border-input);
   border-radius: 20px;
   transition: background 0.12s, border-color 0.12s;
 }
 
-.form-radio-label input[type='radio'] {
-  display: none;
-}
+.form-radio-label input[type='radio'] { display: none; }
 
 .form-radio-label.selected,
 .form-radio-label:has(input:checked) {
-  background: #edf2ff;
-  border-color: #2d6be4;
-  color: #2d6be4;
+  background: var(--primary-bg);
+  border-color: var(--primary);
+  color: var(--primary);
   font-weight: 600;
 }
 
 .form-radio-label:hover {
-  background: #f0f5ff;
-  border-color: #7ba7f7;
+  background: var(--bg-hover);
+  border-color: var(--primary-light);
 }
 
 .form-actions {
@@ -170,28 +149,28 @@
   justify-content: flex-end;
   gap: 10px;
   padding-top: 8px;
-  border-top: 1px solid #eaecef;
+  border-top: 1px solid var(--border);
 }
 
 .btn-cancel {
   padding: 9px 20px;
-  border: 1px solid #d0d7de;
+  border: 1px solid var(--border-input);
   border-radius: 7px;
-  background: #fff;
+  background: var(--bg-card);
   font-size: 13px;
   font-weight: 600;
-  color: #57606a;
+  color: var(--text-secondary);
   cursor: pointer;
   font-family: inherit;
 }
 
-.btn-cancel:hover { background: #f6f8fa; }
+.btn-cancel:hover { background: var(--bg-hover); }
 
 .btn-submit {
   padding: 9px 22px;
   border: none;
   border-radius: 7px;
-  background: #2d6be4;
+  background: var(--primary);
   font-size: 13px;
   font-weight: 600;
   color: #fff;
@@ -199,4 +178,4 @@
   font-family: inherit;
 }
 
-.btn-submit:hover { background: #1f53c2; }
+.btn-submit:hover { background: var(--primary-hover); }

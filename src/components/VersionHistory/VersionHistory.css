@@ -1,6 +1,6 @@
 .version-history {
-  border-top: 1px solid #eaecef;
-  background: #fafbfc;
+  border-top: 1px solid var(--border);
+  background: var(--bg-muted);
   padding: 12px 14px;
 }
 
@@ -9,22 +9,18 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #888;
+  color: var(--text-muted);
   margin-bottom: 10px;
 }
 
 .version-history-empty {
   padding: 12px 14px;
   font-size: 12px;
-  color: #bbb;
-  border-top: 1px solid #eaecef;
+  color: var(--text-faint);
+  border-top: 1px solid var(--border);
 }
 
-.version-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.version-list { display: flex; flex-direction: column; gap: 6px; }
 
 .version-item {
   display: flex;
@@ -33,13 +29,13 @@
   gap: 8px;
   padding: 7px 10px;
   border-radius: 7px;
-  background: #fff;
-  border: 1px solid #eaecef;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
 }
 
 .version-item--current {
-  border-color: #2d6be4;
-  background: #f0f5ff;
+  border-color: var(--primary);
+  background: var(--primary-bg);
 }
 
 .version-item-left {
@@ -53,41 +49,34 @@
 .version-badge {
   font-size: 11px;
   font-weight: 700;
-  color: #2d6be4;
-  background: #edf2ff;
+  color: var(--primary);
+  background: var(--primary-bg);
   padding: 2px 7px;
   border-radius: 4px;
   white-space: nowrap;
   font-family: 'Courier New', monospace;
 }
 
-.version-meta {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
+.version-meta { display: flex; flex-direction: column; min-width: 0; }
 
 .version-label {
   font-size: 12px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.version-date {
-  font-size: 11px;
-  color: #aaa;
-}
+.version-date { font-size: 11px; color: var(--text-faint); }
 
 .btn-restore {
   font-size: 11px;
   padding: 3px 10px;
-  border: 1px solid #d0d7de;
+  border: 1px solid var(--border-input);
   border-radius: 5px;
-  background: #fff;
-  color: #57606a;
+  background: var(--bg-card);
+  color: var(--text-secondary);
   cursor: pointer;
   font-family: inherit;
   font-weight: 600;
@@ -96,17 +85,17 @@
 }
 
 .btn-restore:hover {
-  background: #f6f8fa;
-  border-color: #2d6be4;
-  color: #2d6be4;
+  background: var(--bg-hover);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .version-current-tag {
   font-size: 10px;
   font-weight: 700;
-  color: #2d6be4;
+  color: var(--primary);
   padding: 2px 7px;
-  background: #edf2ff;
+  background: var(--primary-bg);
   border-radius: 10px;
   white-space: nowrap;
   flex-shrink: 0;

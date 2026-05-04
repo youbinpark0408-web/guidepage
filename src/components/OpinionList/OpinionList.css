@@ -12,10 +12,10 @@
 .opinion-list-empty p {
   margin: 0 0 6px;
   font-size: 14px;
-  color: #aaa;
+  color: var(--text-muted);
 }
 
 .opinion-list-empty-sub {
   font-size: 12px;
-  color: #ccc;
+  color: var(--text-faint);
 }

@@ -6,9 +6,8 @@ import {
   rawExcelDataAtom,
   guideListAtom,
 } from '../../store/guideState';
-import { opinionsAtom, opinionFormVisibleAtom } from '../../store/opinionState';
+import { opinionsAtom, opinionFormVisibleAtom, hasOpinionContent } from '../../store/opinionState';
 import { exportToExcel } from '../../utils/excelExporter';
-import { hasOpinionContent } from '../../store/opinionState';
 import OpinionList from '../OpinionList';
 import OpinionForm from '../OpinionForm';
 import UndoRedoBar from '../UndoRedoBar';
@@ -47,7 +46,6 @@ const GuideDetailPanel = () => {
     );
   }
 
-  // 실제 내용이 있는 의견만 카운트
   const opinions = (opinionsMap[selectedGuide.guideId] || []).filter(hasOpinionContent);
   const newCount = opinions.filter((o) => o.isNew).length;
 
@@ -90,15 +88,23 @@ const GuideDetailPanel = () => {
         </div>
       </div>
 
-      {/* 가이드 내용 (읽기 전용) */}
-      {selectedGuide.content && (
-        <div className="detail-content-section">
-          <div className="detail-section-label">
-            <span className="section-icon">📄</span> 가이드 내용
-          </div>
-          <div className="detail-content-body">{selectedGuide.content}</div>
+      {/* 가이드 내용 — 비어있어도 항상 표시 (원인 #1 수정) */}
+      <div className="detail-content-section">
+        <div className="detail-section-label">
+          <span className="section-icon">📄</span> 가이드 내용
         </div>
-      )}
+        {selectedGuide.content ? (
+          <div className="detail-content-body">{selectedGuide.content}</div>
+        ) : (
+          <div className="detail-content-body detail-content-empty">
+            이 항목에는 별도의 내용이 없습니다.
+            <br />
+            <span className="detail-content-empty-sub">
+              계층 구조 항목이거나 엑셀에서 해당 셀이 비어 있습니다.
+            </span>
+          </div>
+        )}
+      </div>
 
       {/* 검토 의견 */}
       <div className="detail-opinions-section">

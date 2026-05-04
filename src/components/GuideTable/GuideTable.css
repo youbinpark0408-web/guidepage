@@ -1,48 +1,111 @@
 .guide-table-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0;
   height: 100%;
 }
 
+/* ── 툴바 ── */
 .guide-table-toolbar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #eaecef;
-  background: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 2;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-toolbar);
+  flex-shrink: 0;
+  flex-wrap: wrap;
 }
 
 .guide-table-count {
-  font-size: 13px;
-  color: #57606a;
+  font-size: 12px;
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
-.guide-table-count strong {
-  color: #1a1a2e;
-}
+.guide-table-count strong { color: var(--text-primary); }
 
 .guide-search-input {
   flex: 1;
-  padding: 7px 12px;
-  border: 1px solid #d0d7de;
+  min-width: 80px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-input);
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
   transition: border-color 0.15s;
-  font-family: inherit;
 }
 
 .guide-search-input:focus {
-  border-color: #2d6be4;
-  box-shadow: 0 0 0 3px rgba(45, 107, 228, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-bg);
 }
 
+.guide-search-input::placeholder { color: var(--text-muted); }
+
+/* 보기 모드 버튼 */
+.view-mode-btns {
+  display: flex;
+  border: 1px solid var(--border-input);
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.view-mode-btn {
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.view-mode-btn + .view-mode-btn {
+  border-left: 1px solid var(--border-input);
+}
+
+.view-mode-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+.view-mode-btn.active { background: var(--primary); color: #fff; }
+
+/* ── 페이지 크기 바 ── */
+.page-size-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-muted);
+  flex-shrink: 0;
+}
+
+.page-size-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.page-size-btn {
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--border-input);
+  border-radius: 5px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+
+.page-size-btn:hover { background: var(--bg-hover); }
+.page-size-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* ── 목록 ── */
 .guide-doc-list {
   overflow-y: auto;
   flex: 1;
@@ -53,93 +116,71 @@
   align-items: center;
   justify-content: center;
   height: 200px;
-  color: #aaa;
+  color: var(--text-faint);
   font-size: 14px;
 }
 
 /* 계층별 스타일 */
 .guide-doc-row {
-  padding: 14px 16px;
-  border-bottom: 1px solid #f0f1f3;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-light);
   cursor: pointer;
   transition: background 0.12s;
-  position: relative;
 }
 
-.guide-doc-row:hover {
-  background: #f6f8ff;
-}
+.guide-doc-row:hover { background: var(--bg-hover); }
 
 .guide-doc-row.level-1 {
-  background: #f8f9fd;
-  border-left: 4px solid #2d6be4;
+  background: var(--level1-bg);
+  border-left: 4px solid var(--level1);
 }
-
-.guide-doc-row.level-1:hover {
-  background: #edf2ff;
-}
+.guide-doc-row.level-1:hover { background: var(--level1-hover); }
 
 .guide-doc-row.level-2 {
-  padding-left: 28px;
-  border-left: 4px solid #7ba7f7;
+  padding-left: 26px;
+  border-left: 4px solid var(--level2);
 }
 
 .guide-doc-row.level-3 {
-  padding-left: 42px;
-  border-left: 4px solid #b8cefb;
+  padding-left: 38px;
+  border-left: 4px solid var(--level3);
 }
 
 .guide-doc-row.level-4 {
-  padding-left: 56px;
-  border-left: 4px solid #dce9fd;
+  padding-left: 50px;
+  border-left: 4px solid var(--level4);
 }
 
 .guide-doc-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   flex-wrap: wrap;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .guide-id-badge {
   font-family: 'Courier New', monospace;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  color: #2d6be4;
-  background: #edf2ff;
-  padding: 2px 8px;
+  color: var(--primary);
+  background: var(--primary-bg);
+  padding: 2px 7px;
   border-radius: 4px;
   letter-spacing: 0.5px;
   white-space: nowrap;
 }
 
-.guide-category {
-  font-size: 13px;
-  font-weight: 600;
-  color: #1a1a2e;
-}
-
-.guide-category.major {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.guide-category.mid {
-  font-size: 13px;
-  color: #2c3e50;
-}
-
-.guide-category.sub {
-  font-size: 13px;
-  color: #444;
-}
+.guide-category { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.guide-category.major { font-size: 13px; font-weight: 700; }
+.guide-category.mid { font-size: 12px; color: var(--text-secondary); }
+.guide-category.sub { font-size: 12px; color: var(--text-muted); font-weight: 400; }
 
 .guide-doc-content {
-  font-size: 13px;
-  color: #444;
-  margin: 4px 0 0;
-  line-height: 1.6;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 3px 0 0;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -149,16 +190,16 @@
 .guide-opinion-preview {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 5px;
+  margin-top: 7px;
   flex-wrap: wrap;
 }
 
 .opinion-count-badge {
-  font-size: 11px;
-  background: #e8f0fe;
-  color: #2d6be4;
-  padding: 2px 7px;
+  font-size: 10px;
+  background: var(--primary-bg);
+  color: var(--primary);
+  padding: 1px 6px;
   border-radius: 10px;
   font-weight: 600;
   margin-left: auto;
@@ -166,19 +207,82 @@
 
 .opinion-type-badge {
   font-size: 11px;
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 10px;
   font-weight: 600;
 }
 
-.badge-ok    { background: #e6f9f0; color: #1a7f4e; }
-.badge-error { background: #fdecea; color: #c0392b; }
-.badge-add   { background: #fff4e5; color: #b8640a; }
+.badge-ok    { background: var(--success-bg); color: var(--success); }
+.badge-error { background: var(--danger-bg); color: var(--danger); }
+.badge-add   { background: var(--warning-bg); color: var(--warning-text); }
 .badge-del   { background: #f5f0ff; color: #6b35c8; }
 .badge-mod   { background: #e8f4fd; color: #1a6fa0; }
-.badge-default { background: #f0f0f0; color: #666; }
+.badge-default { background: var(--bg-muted); color: var(--text-muted); }
 
-.opinion-more {
-  font-size: 11px;
-  color: #888;
+.opinion-more { font-size: 11px; color: var(--text-muted); }
+
+/* ── 페이지네이션 ── */
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-toolbar);
+  flex-shrink: 0;
 }
+
+.page-btn {
+  min-width: 30px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--border-input);
+  border-radius: 5px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+  white-space: nowrap;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--primary-bg);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.page-btn-active {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-color: var(--primary) !important;
+}
+
+.page-ellipsis {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 2px;
+  user-select: none;
+}
+
+.page-info {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 6px;
+  white-space: nowrap;
+  border-left: 1px solid var(--border);
+  margin-left: 4px;
+}
+
+.page-info strong { color: var(--text-primary); }

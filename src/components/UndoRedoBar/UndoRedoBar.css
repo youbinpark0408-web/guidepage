@@ -1,41 +1,38 @@
 .undo-redo-bar {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .undo-btn {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 12px;
-  border: 1px solid #d0d7de;
+  padding: 5px 10px;
+  border: 1px solid var(--border-input);
   border-radius: 6px;
-  background: #fff;
+  background: var(--bg-card);
   font-size: 12px;
   font-weight: 600;
-  color: #444;
+  color: var(--text-secondary);
   cursor: pointer;
   font-family: inherit;
   transition: background 0.1s, border-color 0.1s;
 }
 
 .undo-btn:hover:not(.disabled) {
-  background: #edf2ff;
-  border-color: #2d6be4;
-  color: #2d6be4;
+  background: var(--primary-bg);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
-.undo-btn.disabled {
-  opacity: 0.35;
-  cursor: default;
-}
+.undo-btn.disabled { opacity: 0.3; cursor: default; }
 
 .history-count {
   font-size: 10px;
   font-weight: 700;
-  background: #edf2ff;
-  color: #2d6be4;
+  background: var(--primary-bg);
+  color: var(--primary);
   padding: 1px 5px;
   border-radius: 8px;
   line-height: 1.4;
