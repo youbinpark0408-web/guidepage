@@ -42,9 +42,9 @@ const DEFAULT_COL_WIDTHS = {
   2: 80,   // 대목차
   3: 80,   // 중목차
   4: 90,   // 세부목차
-  5: 260,  // 내용 (넓게)
+  5: 650,  // 내용 (넓게)
   6: 70,   // 의견유형
-  7: 120,  // 개정안
+  7: 650,  // 개정안 (set 0)
   8: 120,  // 수정의견
   9: 130,  // 근거
   10: 65,  // 의견일치
@@ -52,7 +52,11 @@ const DEFAULT_COL_WIDTHS = {
   12: 110, // KAIT
   13: 110, // KISA
 };
-const EXT_COL_WIDTH = 110; // 14번 이후 열
+const EXT_COL_WIDTH = 110; // 14번 이후 열 기본값
+
+/** 개정안 열 여부 (7, 15, 23, ...) — OP_SET_SIZE 단위마다 반복 */
+const isRevisedDraftCol = (ci) =>
+  ci >= 7 && (ci - 7) % OP_SET_SIZE === 0;
 
 const ExcelReadView = () => {
   const rawData        = useRecoilValue(rawExcelDataAtom);
@@ -95,7 +99,13 @@ const ExcelReadView = () => {
     };
   }, [colWidths]);
 
-  const getW = (ci) => colWidths[ci] ?? DEFAULT_COL_WIDTHS[ci] ?? EXT_COL_WIDTH;
+  const getW = (ci) => {
+    if (colWidths[ci] !== undefined) return colWidths[ci];
+    if (DEFAULT_COL_WIDTHS[ci] !== undefined) return DEFAULT_COL_WIDTHS[ci];
+    // 개정안 열 (7, 15, 23, ...): 650px
+    if (isRevisedDraftCol(ci)) return 650;
+    return EXT_COL_WIDTH;
+  };
 
   // ── 데이터 파싱 ──
   const { columnHeader, dataRows, colCount } = useMemo(() => {

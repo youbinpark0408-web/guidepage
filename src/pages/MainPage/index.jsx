@@ -66,10 +66,12 @@ const MainPage = () => {
 
   const hasData = guideList.length > 0;
 
-  const handleExport = () => {
+  const handleExport = async () => {
     if (!rawData) { alert('다운로드할 데이터가 없습니다.'); return; }
+    const arrayBuffer = await dbGet(STORES.EXCEL, 'excelBuffer');
+    if (!arrayBuffer) { alert('원본 파일 데이터가 없습니다. 파일을 다시 업로드해 주세요.'); return; }
     exportToExcel(
-      rawData.rawWorkbook,
+      arrayBuffer,
       rawData.sheetName,
       opinionsMap,
       guideList,
