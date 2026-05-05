@@ -1,14 +1,14 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import * as XLSX from 'xlsx';
-import { rawExcelDataAtom, guideListAtom } from '../../store/guideState';
+import { rawExcelDataAtom, guideListAtom, selectedGuideIdAtom } from '../../store/guideState';
 import { opinionsAtom, hasOpinionContent } from '../../store/opinionState';
 import './ExcelReadView.css';
 
-const DATA_START_ROW = 6; // rows 0-5 = header rows; row 5 = column names; row 6+ = data
+const DATA_START_ROW = 6;
 
-// Opinion columns: 8 per set starting at col 6
-// Set 0: cols 6-13,  Set 1: cols 14-21,  Set 2: cols 22-29, ...
+// 의견 열: 8칸 단위, col 6부터
+// Set 0: 6-13, Set 1: 14-21, Set 2: 22-29, ...
 const OP_COL_START = 6;
 const OP_SET_SIZE  = 8;
 
@@ -35,20 +35,73 @@ const getPageNums = (cur, total) => {
   return nums;
 };
 
+// 기본 열 너비
+const DEFAULT_COL_WIDTHS = {
+  0: 32,   // 순번
+  1: 100,  // CAIG ID
+  2: 80,   // 대목차
+  3: 80,   // 중목차
+  4: 90,   // 세부목차
+  5: 260,  // 내용 (넓게)
+  6: 70,   // 의견유형
+  7: 120,  // 개정안
+  8: 120,  // 수정의견
+  9: 130,  // 근거
+  10: 65,  // 의견일치
+  11: 110, // 이슈사항
+  12: 110, // KAIT
+  13: 110, // KISA
+};
+const EXT_COL_WIDTH = 110; // 14번 이후 열
+
 const ExcelReadView = () => {
-  const rawData     = useRecoilValue(rawExcelDataAtom);
-  const guideList   = useRecoilValue(guideListAtom);
-  const opinionsMap = useRecoilValue(opinionsAtom);
+  const rawData        = useRecoilValue(rawExcelDataAtom);
+  const guideList      = useRecoilValue(guideListAtom);
+  const opinionsMap    = useRecoilValue(opinionsAtom);
+  const setSelectedId  = useSetRecoilState(selectedGuideIdAtom);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize]       = useState(50);
+  const [colWidths, setColWidths]     = useState({});
 
+  // ── 열 리사이즈 드래그 ──
+  const resizeRef = useRef({ active: false, col: -1, startX: 0, startW: 0 });
+
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!resizeRef.current.active) return;
+      const { col, startX, startW } = resizeRef.current;
+      const newW = Math.max(40, startW + (e.clientX - startX));
+      setColWidths((prev) => ({ ...prev, [col]: newW }));
+    };
+    const onUp = () => { resizeRef.current.active = false; };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, []);
+
+  const startResize = useCallback((e, ci) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const def = DEFAULT_COL_WIDTHS[ci] ?? EXT_COL_WIDTH;
+    resizeRef.current = {
+      active: true,
+      col: ci,
+      startX: e.clientX,
+      startW: colWidths[ci] ?? def,
+    };
+  }, [colWidths]);
+
+  const getW = (ci) => colWidths[ci] ?? DEFAULT_COL_WIDTHS[ci] ?? EXT_COL_WIDTH;
+
+  // ── 데이터 파싱 ──
   const { columnHeader, dataRows, colCount } = useMemo(() => {
     if (!rawData) return { columnHeader: [], dataRows: [], colCount: 14 };
 
     const sheet = rawData.rawWorkbook.Sheets[rawData.sheetName];
-
-    // blankrows:true 필수 — false 사용 시 빈 행이 제거되어 행 인덱스 틀어짐
     const allRows = XLSX.utils.sheet_to_json(sheet, {
       header: 1,
       defval: '',
@@ -56,13 +109,11 @@ const ExcelReadView = () => {
     });
 
     const colCount = Math.max(14, ...allRows.map((r) => r.length));
-
-    // 마지막 헤더 행(행 6 = index 5)만 컬럼명으로 사용
     const columnHeader = allRows[DATA_START_ROW - 1] || [];
     const rawRows      = allRows.slice(DATA_START_ROW);
 
     let curGuideId = '';
-    const opCounters = {}; // guideId → 소비된 Recoil 의견 수
+    const opCounters = {};
 
     const dataRows = rawRows.map((rawRow) => {
       const cells = Array.from({ length: colCount }, (_, ci) => s(rawRow[ci]));
@@ -70,27 +121,22 @@ const ExcelReadView = () => {
       if (gid) curGuideId = gid;
       const myGid = curGuideId;
 
-      // ── 가로 방향 의견 세트 개수 파악 ──
       const maxSets = Math.floor((cells.length - OP_COL_START) / OP_SET_SIZE);
       let setsInRow = 0;
-      for (let setIdx = 0; setIdx < maxSets; setIdx++) {
-        const base = OP_COL_START + setIdx * OP_SET_SIZE;
-        if (cells.slice(base, base + OP_SET_SIZE).some((v) => v !== '')) {
-          setsInRow++;
-        }
+      for (let si = 0; si < maxSets; si++) {
+        const base = OP_COL_START + si * OP_SET_SIZE;
+        if (cells.slice(base, base + OP_SET_SIZE).some((v) => v !== '')) setsInRow++;
       }
 
       if (setsInRow > 0) {
         const recoilOps = (opinionsMap[myGid] || []).filter(hasOpinionContent);
         const startIdx  = opCounters[myGid] ?? 0;
 
-        for (let setIdx = 0; setIdx < setsInRow; setIdx++) {
-          const base      = OP_COL_START + setIdx * OP_SET_SIZE;
-          const recoilIdx = startIdx + setIdx;
-
-          if (recoilIdx < recoilOps.length) {
-            // Recoil 의견으로 덮어쓰기
-            const op = recoilOps[recoilIdx];
+        for (let si = 0; si < setsInRow; si++) {
+          const base = OP_COL_START + si * OP_SET_SIZE;
+          const ri   = startIdx + si;
+          if (ri < recoilOps.length) {
+            const op = recoilOps[ri];
             cells[base + 0] = op.opinionType         || '';
             cells[base + 1] = op.revisedDraft        || '';
             cells[base + 2] = op.modificationOpinion || '';
@@ -100,18 +146,16 @@ const ExcelReadView = () => {
             cells[base + 6] = op.kaitOpinion         || '';
             cells[base + 7] = op.kisaOpinion         || '';
           } else {
-            // Recoil에 의견이 없으면 해당 세트 비우기
             for (let c = base; c < base + OP_SET_SIZE; c++) cells[c] = '';
           }
         }
-
         opCounters[myGid] = startIdx + setsInRow;
       }
 
       return { cells, guideId: myGid, isFirst: !!gid };
     });
 
-    // ── 원본 엑셀에 없는 새 Recoil 의견 추가 ──
+    // 새 Recoil 의견 (원본에 없음) 추가
     for (const guide of guideList) {
       const gid       = guide.guideId;
       const recoilOps = (opinionsMap[gid] || []).filter(hasOpinionContent);
@@ -134,7 +178,6 @@ const ExcelReadView = () => {
     return { columnHeader, dataRows, colCount };
   }, [rawData, guideList, opinionsMap]);
 
-  // 소스 데이터 바뀌면 첫 페이지로
   useEffect(() => { setCurrentPage(1); }, [dataRows.length, pageSize]);
 
   if (!rawData && guideList.length === 0) {
@@ -153,21 +196,31 @@ const ExcelReadView = () => {
   return (
     <div className="excel-read-view">
       <div className="excel-table-wrap">
-        <table className="excel-table">
+        <table className="excel-table" style={{ tableLayout: 'fixed' }}>
+          <colgroup>
+            <col style={{ width: 32, minWidth: 32 }} />
+            {Array.from({ length: colCount }, (_, ci) => (
+              <col key={ci} style={{ width: getW(ci), minWidth: 40 }} />
+            ))}
+          </colgroup>
 
-          {/* ── 컬럼명 헤더 행 (엑셀 6행만) ── */}
+          {/* ── 헤더 ── */}
           <thead>
             <tr className="header-row header-row-main">
               <th className="col-rownum">#</th>
               {Array.from({ length: colCount }, (_, ci) => (
-                <th key={ci} className={`header-cell col-w-${ci < 14 ? ci : 'ext'}`}>
-                  {String(columnHeader[ci] ?? '')}
+                <th key={ci} className="header-cell">
+                  <span className="header-text">{String(columnHeader[ci] ?? '')}</span>
+                  <div
+                    className="col-resize-handle"
+                    onMouseDown={(e) => startResize(e, ci)}
+                  />
                 </th>
               ))}
             </tr>
           </thead>
 
-          {/* ── 데이터 행 (페이지네이션) ── */}
+          {/* ── 데이터 행 ── */}
           <tbody>
             {pagedRows.map(({ cells, guideId, isFirst, isNew }, ri) => {
               const globalRi = (currentPage - 1) * pageSize + ri;
@@ -180,26 +233,32 @@ const ExcelReadView = () => {
                   <td className="col-rownum">{DATA_START_ROW + globalRi + 1}</td>
 
                   {cells.map((cell, ci) => {
-                    // CAIG ID 배지
+                    // CAIG ID — 클릭 가능 배지
                     if (ci === 1 && cell && isFirst) {
                       return (
-                        <td key={ci} className={`data-cell col-w-${ci}`}>
-                          <span className="er-id-badge">{cell}</span>
+                        <td key={ci} className="data-cell">
+                          <button
+                            className="er-id-badge er-id-clickable"
+                            onClick={() => setSelectedId(cell)}
+                            title="클릭하여 검토 의견 보기"
+                          >
+                            {cell}
+                          </button>
                         </td>
                       );
                     }
 
-                    // 의견 유형 배지 (col 6, 14, 22, ...)
+                    // 의견 유형 배지
                     if (isOpTypeCol(ci) && cell) {
                       const badgeCls = OPINION_TYPE_CLS[cell] || '';
                       return (
-                        <td key={ci} className={`data-cell col-w-${ci < 14 ? ci : 'ext'}`}>
+                        <td key={ci} className="data-cell">
                           <span className={`er-op-badge ${badgeCls}`}>{cell}</span>
                         </td>
                       );
                     }
 
-                    // 연속 행의 가이드 정보 열 (1~5) 음영
+                    // 연속 행 가이드 정보 음영
                     if (!isFirst && !isNew && ci >= 1 && ci <= 5 && !cell) {
                       return <td key={ci} className="data-cell cell-continuation" />;
                     }
@@ -207,7 +266,7 @@ const ExcelReadView = () => {
                     return (
                       <td
                         key={ci}
-                        className={`data-cell col-w-${ci < 14 ? ci : 'ext'} ${!cell ? 'cell-blank' : ''}`}
+                        className={`data-cell ${!cell ? 'cell-blank' : ''}`}
                       >
                         {cell}
                       </td>
@@ -239,7 +298,7 @@ const ExcelReadView = () => {
         </div>
 
         <div className="pagination-right">
-          <button className="page-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(1)} title="첫 페이지">«</button>
+          <button className="page-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
           <button className="page-btn" disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>‹ 이전</button>
           {pageNums[0] > 1 && <span className="page-ellipsis">…</span>}
           {pageNums.map((n) => (
@@ -253,7 +312,7 @@ const ExcelReadView = () => {
           ))}
           {pageNums[pageNums.length - 1] < totalPages && <span className="page-ellipsis">…</span>}
           <button className="page-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage((p) => p + 1)}>다음 ›</button>
-          <button className="page-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)} title="마지막 페이지">»</button>
+          <button className="page-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
           <span className="page-current-info">{currentPage} / {totalPages}</span>
         </div>
       </div>

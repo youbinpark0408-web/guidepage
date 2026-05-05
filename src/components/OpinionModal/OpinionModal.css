@@ -1,0 +1,225 @@
+/* ══════════════════════════════════
+   오버레이
+══════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px;
+  overflow-y: auto;
+  backdrop-filter: blur(2px);
+}
+
+/* ══════════════════════════════════
+   패널
+══════════════════════════════════ */
+.modal-panel {
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 860px;
+  min-height: 300px;
+  max-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+/* ══════════════════════════════════
+   헤더
+══════════════════════════════════ */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-toolbar);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.modal-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.modal-guide-badge {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-bg);
+  padding: 3px 9px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.modal-breadcrumb {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.modal-breadcrumb.sub {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.modal-sep {
+  color: var(--text-faint);
+  font-size: 13px;
+}
+
+.modal-new-badge {
+  font-size: 11px;
+  background: var(--success-bg);
+  color: var(--success);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn-modal-download {
+  padding: 5px 12px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+.btn-modal-download:hover { opacity: 0.85; }
+
+.modal-close-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-input);
+  border-radius: 6px;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.1s, color 0.1s;
+}
+.modal-close-btn:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* ══════════════════════════════════
+   바디 (스크롤)
+══════════════════════════════════ */
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 가이드 내용 섹션 ── */
+.modal-content-section {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modal-content-body {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.modal-content-empty {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+/* ── 검토 의견 섹션 ── */
+.modal-opinions-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-opinions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-muted);
+  flex-shrink: 0;
+}
+
+.modal-opinion-count {
+  font-size: 11px;
+  background: var(--primary-bg);
+  color: var(--primary);
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+/* 의견 추가 버튼 — 기존 스타일과 동일 */
+.btn-add-opinion {
+  padding: 5px 12px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.btn-add-opinion:hover { opacity: 0.85; }
+
+/* ── 다크모드 ── */
+[data-theme="dark"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+[data-theme="dark"] .modal-panel {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
