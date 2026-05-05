@@ -3,11 +3,8 @@ import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import {
   selectedGuideSelector,
   selectedGuideIdAtom,
-  rawExcelDataAtom,
-  guideListAtom,
 } from '../../store/guideState';
 import { opinionsAtom, opinionFormVisibleAtom, hasOpinionContent } from '../../store/opinionState';
-import { exportToExcel } from '../../utils/excelExporter';
 import OpinionList from '../OpinionList';
 import OpinionForm from '../OpinionForm';
 import UndoRedoBar from '../UndoRedoBar';
@@ -17,8 +14,6 @@ const OpinionModal = () => {
   const selectedGuide    = useRecoilValue(selectedGuideSelector);
   const setSelectedId    = useSetRecoilState(selectedGuideIdAtom);
   const opinionsMap      = useRecoilValue(opinionsAtom);
-  const rawData          = useRecoilValue(rawExcelDataAtom);
-  const guideList        = useRecoilValue(guideListAtom);
   const [formVisible, setFormVisible] = useRecoilState(opinionFormVisibleAtom);
 
   // ESC 키로 닫기
@@ -31,20 +26,6 @@ const OpinionModal = () => {
   const handleClose = () => {
     setSelectedId(null);
     setFormVisible(false);
-  };
-
-  const handleExport = () => {
-    if (!rawData) {
-      alert('다운로드할 데이터가 없습니다.');
-      return;
-    }
-    exportToExcel(
-      rawData.rawWorkbook,
-      rawData.sheetName,
-      opinionsMap,
-      guideList,
-      '암호자산_식별가이드_검토의견_수정본.xlsx'
-    );
   };
 
   if (!selectedGuide) return null;
@@ -82,9 +63,6 @@ const OpinionModal = () => {
             {newCount > 0 && (
               <span className="modal-new-badge">{newCount}개 신규</span>
             )}
-            <button className="btn-modal-download" onClick={handleExport}>
-              ⬇ 엑셀 다운로드
-            </button>
             <button className="modal-close-btn" onClick={handleClose} title="닫기 (ESC)">
               ✕
             </button>

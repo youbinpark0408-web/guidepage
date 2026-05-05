@@ -96,20 +96,6 @@
   white-space: nowrap;
 }
 
-.btn-modal-download {
-  padding: 5px 12px;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  white-space: nowrap;
-  transition: opacity 0.15s;
-}
-.btn-modal-download:hover { opacity: 0.85; }
 
 .modal-close-btn {
   width: 30px;

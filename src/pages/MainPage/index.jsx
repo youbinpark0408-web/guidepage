@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import {
   uploadStatusAtom,
@@ -8,12 +8,12 @@ import {
 import { opinionsAtom } from '../../store/opinionState';
 import { dbGet, STORES } from '../../utils/db';
 import { parseExcelFile } from '../../utils/excelParser';
+import { exportToExcel } from '../../utils/excelExporter';
 import { darkModeAtom } from '../../store/uiState';
 import FileUpload from '../../components/FileUpload';
 import ExcelReadView from '../../components/ExcelReadView';
 import OpinionModal from '../../components/OpinionModal';
 import './MainPage.css';
-import { useState } from 'react';
 
 /**
  * 새로고침 후 IDB ArrayBuffer에서 전체 재파싱
@@ -58,11 +58,24 @@ const AppInitializer = () => {
 };
 
 const MainPage = () => {
-  const guideList             = useRecoilValue(guideListAtom);
+  const guideList               = useRecoilValue(guideListAtom);
+  const rawData                 = useRecoilValue(rawExcelDataAtom);
+  const opinionsMap             = useRecoilValue(opinionsAtom);
   const [darkMode, setDarkMode] = useRecoilState(darkModeAtom);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const hasData = guideList.length > 0;
+
+  const handleExport = () => {
+    if (!rawData) { alert('다운로드할 데이터가 없습니다.'); return; }
+    exportToExcel(
+      rawData.rawWorkbook,
+      rawData.sheetName,
+      opinionsMap,
+      guideList,
+      '암호자산_식별가이드_검토의견_수정본.xlsx'
+    );
+  };
 
   return (
     <div className="main-layout">
@@ -91,12 +104,19 @@ const MainPage = () => {
           </div>
 
           {hasData && (
-            <div className="sidebar-stats">
-              <div className="stat-item">
-                <span className="stat-value">{guideList.length}</span>
-                <span className="stat-label">가이드 항목</span>
+            <>
+              <div className="sidebar-stats">
+                <div className="stat-item">
+                  <span className="stat-value">{guideList.length}</span>
+                  <span className="stat-label">가이드 항목</span>
+                </div>
               </div>
-            </div>
+              <div className="sidebar-download-section">
+                <button className="btn-sidebar-download" onClick={handleExport}>
+                  ⬇ 엑셀 다운로드
+                </button>
+              </div>
+            </>
           )}
 
           <div className="sidebar-footer">
@@ -144,7 +164,13 @@ const MainPage = () => {
             </div>
           </div>
         ) : (
-          <ExcelReadView />
+          <div className="excel-view-wrapper">
+            <div className="excel-hint-bar">
+              💡 <strong>가이드 ID</strong>를 클릭하면 검토 의견을 입력할 수 있습니다&nbsp;&nbsp;·&nbsp;&nbsp;
+              * 열 너비는 헤더 오른쪽 끝을 드래그하여 조정할 수 있습니다
+            </div>
+            <ExcelReadView />
+          </div>
         )}
 
         {/* 의견 팝업 모달 — selectedGuideId가 있을 때 자동 표시 */}
